@@ -62,6 +62,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hold"",
+                    ""type"": ""Button"",
+                    ""id"": ""a6007ab4-f7fe-4dc5-92ea-59644eff9099"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -262,6 +271,28 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Exit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0bac59e-9c0c-40b4-97e9-1c9e51d71330"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e234dc37-90d2-415c-839c-a7db1edc75d8"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -280,6 +311,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Grounded_Jump = m_Grounded.FindAction("Jump", throwIfNotFound: true);
         m_Grounded_Enter = m_Grounded.FindAction("Enter", throwIfNotFound: true);
         m_Grounded_Exit = m_Grounded.FindAction("Exit", throwIfNotFound: true);
+        m_Grounded_Hold = m_Grounded.FindAction("Hold", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -343,6 +375,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Grounded_Jump;
     private readonly InputAction m_Grounded_Enter;
     private readonly InputAction m_Grounded_Exit;
+    private readonly InputAction m_Grounded_Hold;
     public struct GroundedActions
     {
         private @PlayerInput m_Wrapper;
@@ -351,6 +384,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Grounded_Jump;
         public InputAction @Enter => m_Wrapper.m_Grounded_Enter;
         public InputAction @Exit => m_Wrapper.m_Grounded_Exit;
+        public InputAction @Hold => m_Wrapper.m_Grounded_Hold;
         public InputActionMap Get() { return m_Wrapper.m_Grounded; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -372,6 +406,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Exit.started -= m_Wrapper.m_GroundedActionsCallbackInterface.OnExit;
                 @Exit.performed -= m_Wrapper.m_GroundedActionsCallbackInterface.OnExit;
                 @Exit.canceled -= m_Wrapper.m_GroundedActionsCallbackInterface.OnExit;
+                @Hold.started -= m_Wrapper.m_GroundedActionsCallbackInterface.OnHold;
+                @Hold.performed -= m_Wrapper.m_GroundedActionsCallbackInterface.OnHold;
+                @Hold.canceled -= m_Wrapper.m_GroundedActionsCallbackInterface.OnHold;
             }
             m_Wrapper.m_GroundedActionsCallbackInterface = instance;
             if (instance != null)
@@ -388,6 +425,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Exit.started += instance.OnExit;
                 @Exit.performed += instance.OnExit;
                 @Exit.canceled += instance.OnExit;
+                @Hold.started += instance.OnHold;
+                @Hold.performed += instance.OnHold;
+                @Hold.canceled += instance.OnHold;
             }
         }
     }
@@ -407,5 +447,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnEnter(InputAction.CallbackContext context);
         void OnExit(InputAction.CallbackContext context);
+        void OnHold(InputAction.CallbackContext context);
     }
 }

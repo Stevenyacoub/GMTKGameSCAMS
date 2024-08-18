@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - MainLight
+  - ShadowableObject
   layers:
   - Default
   - TransparentFX
