@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,23 +15,28 @@ public class ExtrudedMesh2D : MonoBehaviour
     /// Adjust this depending on the direction of the scene. 
     [FormerlySerializedAs("hasPositiveDepthAxis")] public bool flipShadowMeshDepth = true;
 
-    private MeshFilter meshFilter;
-    private MeshRenderer meshRenderer;
-    private Mesh mesh;
+    private MeshFilter _meshFilter;
+    private Mesh _mesh;
+
+    void Awake()
+    {
+        _mesh = new Mesh();
+        _meshFilter = GetComponent<MeshFilter>();
+    }
     
     // Start is called before the first frame update
     void Start()
     {
-        meshFilter = GetComponent<MeshFilter>();
-        meshRenderer = GetComponent<MeshRenderer>();
-        
-        mesh = new Mesh();
-        
         GenerateMesh();
     }
     
     
     public void GenerateMesh() {
+        if (shape2D == null || shape2D.Length == 0)
+        {
+            return;
+        } 
+        
         if (flipShadowMeshDepth)
         {
             depth *= -1.0f;
@@ -77,10 +83,10 @@ public class ExtrudedMesh2D : MonoBehaviour
             triangles[triIndex++] = nextIndex + numVertices;
         }
         
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
-        mesh.RecalculateNormals();
+        _mesh.vertices = vertices;
+        _mesh.triangles = triangles;
+        _mesh.RecalculateNormals();
 
-        meshFilter.mesh = mesh;
+        _meshFilter.mesh = _mesh;
     }
 }

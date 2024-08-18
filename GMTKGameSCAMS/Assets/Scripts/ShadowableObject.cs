@@ -20,7 +20,7 @@ public class ShadowableObject : MonoBehaviour
     public bool flipShadowMeshDepth = true;
     
     /// Z-axis offset to give shadow depth for player to walk on.
-    public const float SHADOW_MESH_DEPTH_OFFSET = 0.05f; 
+    public const float SHADOW_MESH_DEPTH_OFFSET = 0.05f;
     
     // Start is called before the first frame update
     void Start()
