@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     InputAction move;
 
     private WallState currentWallState = WallState.Wall;
+    private bool collidingWithWall = false;
 
     [SerializeField] private float maxJumpHeight = 1.0f;
     [SerializeField] private float maxJumpDuration = 0.5f;
@@ -92,7 +93,8 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnterWall(InputAction.CallbackContext context)
     {
-        if (currentWallState == WallState.Wall)
+        Debug.Log("collidingWithWall = " + collidingWithWall);
+        if (currentWallState == WallState.Wall || collidingWithWall == false)
         {
             return;
         }
@@ -220,31 +222,17 @@ public class PlayerController : MonoBehaviour
         Debug.Log(WallState.Wall);
     }
     
-    void OnCollisionEnter(Collision collision)
-    {
-        // Check if the object this collided with has a specific tag, name, or component
-        if (collision.gameObject.CompareTag("ShadowableObject")) // Replace "TargetTag" with the tag of the other object
-        {
-            Debug.Log("Collided with: " + collision.gameObject.name);
-        }
-    }
-    
-    void OnCollisionExit(Collision collision)
-    {
-        // Check if the object this collided with has a specific tag, name, or component
-        if (collision.gameObject.CompareTag("ShadowableObject")) // Replace "TargetTag" with the tag of the other object
-        {
-            Debug.Log("Stopped colliding with: " + collision.gameObject.name);
-        }
-    }
-    
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Staying in trigger with the specific tag: " + other.gameObject.name);
         // Check if the other collider has the specific tag
         if (other.CompareTag("ShadowableObject"))
         {
-            Debug.Log("Staying in trigger with the specific tag: " + other.gameObject.name);
             collidingObject = other.gameObject;
+        }
+        else if (other.CompareTag("Wall"))
+        {
+            collidingWithWall = true;
         }
     }
 
@@ -253,6 +241,10 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("ShadowableObject"))
         {
             collidingObject = null;
+        }
+        else if (other.CompareTag("Wall"))
+        {
+            collidingWithWall = false;
         }
     }
 }
