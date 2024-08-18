@@ -11,6 +11,7 @@ public class ExtrudedMesh2D : MonoBehaviour
 
     private MeshFilter meshFilter;
     private MeshRenderer meshRenderer;
+    private Mesh mesh;
     
     // Start is called before the first frame update
     void Start()
@@ -18,7 +19,13 @@ public class ExtrudedMesh2D : MonoBehaviour
         meshFilter = GetComponent<MeshFilter>();
         meshRenderer = GetComponent<MeshRenderer>();
         
-        Mesh mesh = new Mesh();
+        mesh = new Mesh();
+        
+        GenerateMesh();
+    }
+    
+    
+    public void GenerateMesh() {
         int numVertices = shape2D.Length;
         Vector3[] vertices = new Vector3[numVertices * 2];
         int[] triangles = new int[(numVertices - 2) * 6 + numVertices * 6];
