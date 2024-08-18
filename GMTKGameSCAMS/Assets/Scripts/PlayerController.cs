@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float maxSpeed;
     [SerializeField] public float rotationSpeed;
+    [SerializeField] public bool freezeRotation;
     private float magnitude;
     private Vector3 moveDirection;
     private Vector3 moveForce;
@@ -22,12 +23,18 @@ public class PlayerController : MonoBehaviour
     InputAction move;
 
     private WallState currentWallState = WallState.Wall;
+    private bool collidingWithWall = false;
 
     [SerializeField] private float maxJumpHeight = 1.0f;
     [SerializeField] private float maxJumpDuration = 0.5f;
     private float jumpInit;
     private bool isJumpPressed = false;
     private bool isJumping = false;
+    
+    
+    private bool isHoldPressed = false;
+    private GameObject collidingObject;
+    
 
     [SerializeField] private Rigidbody rb;
     private void Awake()
@@ -47,6 +54,9 @@ public class PlayerController : MonoBehaviour
         
         inputActions.Grounded.Exit.started += OnExitWall;
         inputActions.Grounded.Exit.canceled -= OnExitWall;
+        
+        inputActions.Grounded.Hold.started += OnHoldObject;
+        inputActions.Grounded.Hold.canceled -= OnHoldObject;
 
     }
 
@@ -83,7 +93,8 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnterWall(InputAction.CallbackContext context)
     {
-        if (currentWallState == WallState.Wall)
+        Debug.Log("collidingWithWall = " + collidingWithWall);
+        if (currentWallState == WallState.Wall || collidingWithWall == false)
         {
             return;
         }
@@ -119,13 +130,36 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnHoldObject(InputAction.CallbackContext context)
+    {
+        isHoldPressed = !isHoldPressed;
+        HandleHold();
+    }
+
+    private void HandleHold()
+    {
+        if (collidingObject != null)
+        {
+            if (isHoldPressed)
+            {
+                collidingObject.transform.parent = transform;
+                freezeRotation = true;
+            }
+            else
+            {
+                collidingObject.transform.parent = null;
+                freezeRotation = false;
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
 
         transform.Translate(-1 * moveDirection * magnitude * moveSpeed * Time.deltaTime, Space.World);
 
-        if (moveDirection != Vector3.zero)
+        if (moveDirection != Vector3.zero && freezeRotation == false)
         {
             Quaternion toRotation = Quaternion.LookRotation(-1 * moveDirection, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
@@ -186,5 +220,31 @@ public class PlayerController : MonoBehaviour
     {
         transform.localScale = new Vector3(0.01f, 1f, 1f);
         Debug.Log(WallState.Wall);
+    }
+    
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Staying in trigger with the specific tag: " + other.gameObject.name);
+        // Check if the other collider has the specific tag
+        if (other.CompareTag("ShadowableObject"))
+        {
+            collidingObject = other.gameObject;
+        }
+        else if (other.CompareTag("Wall"))
+        {
+            collidingWithWall = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("ShadowableObject"))
+        {
+            collidingObject = null;
+        }
+        else if (other.CompareTag("Wall"))
+        {
+            collidingWithWall = false;
+        }
     }
 }

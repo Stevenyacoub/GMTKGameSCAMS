@@ -1,31 +1,47 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 public class ExtrudedMesh2D : MonoBehaviour
 {
     public Vector2[] shape2D; // 2D vertices
-    public float depth = 1.0f; // Depth for extrusion
+    public float depth = .5f; // Depth for extrusion
+    
+    /// If true, extrudes the shape along the positive Z-axis. Otherwise, extrudes along negative Z-axis.
+    /// Adjust this depending on the direction of the scene. 
+    [FormerlySerializedAs("hasPositiveDepthAxis")] public bool flipShadowMeshDepth = true;
 
-    private MeshFilter meshFilter;
-    private MeshRenderer meshRenderer;
-    private Mesh mesh;
+    private MeshFilter _meshFilter;
+    private Mesh _mesh;
+
+    void Awake()
+    {
+        _mesh = new Mesh();
+        _meshFilter = GetComponent<MeshFilter>();
+    }
     
     // Start is called before the first frame update
     void Start()
     {
-        meshFilter = GetComponent<MeshFilter>();
-        meshRenderer = GetComponent<MeshRenderer>();
-        
-        mesh = new Mesh();
-        
         GenerateMesh();
     }
     
     
     public void GenerateMesh() {
+        if (shape2D == null || shape2D.Length == 0)
+        {
+            return;
+        } 
+        
+        if (flipShadowMeshDepth)
+        {
+            depth *= -1.0f;
+        }
+        
         int numVertices = shape2D.Length;
         Vector3[] vertices = new Vector3[numVertices * 2];
         int[] triangles = new int[(numVertices - 2) * 6 + numVertices * 6];
@@ -67,10 +83,10 @@ public class ExtrudedMesh2D : MonoBehaviour
             triangles[triIndex++] = nextIndex + numVertices;
         }
         
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
-        mesh.RecalculateNormals();
+        _mesh.vertices = vertices;
+        _mesh.triangles = triangles;
+        _mesh.RecalculateNormals();
 
-        meshFilter.mesh = mesh;
+        _meshFilter.mesh = _mesh;
     }
 }

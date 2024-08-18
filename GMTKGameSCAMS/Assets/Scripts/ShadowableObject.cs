@@ -17,6 +17,11 @@ public class ShadowableObject : MonoBehaviour
     private Vector2[] _shadowPointsXY;
     private ExtrudedMesh2D _shadowMesh;
     
+    public bool flipShadowMeshDepth = true;
+    
+    /// Z-axis offset to give shadow depth for player to walk on.
+    public const float SHADOW_MESH_DEPTH_OFFSET = 0.05f;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +35,9 @@ public class ShadowableObject : MonoBehaviour
         obj.AddComponent<MeshFilter>();
         obj.GetComponent<MeshRenderer>().material = shadowMaterial;
         _shadowMesh = obj.AddComponent<ExtrudedMesh2D>();  // Must be added after Mesh Renderer and Filter
+
+        _shadowMesh.flipShadowMeshDepth = flipShadowMeshDepth;
+        _shadowMesh.GenerateMesh();
 
     }
 
@@ -55,7 +63,7 @@ public class ShadowableObject : MonoBehaviour
                 // Set the z position of the shadow.
                 _shadowMesh.transform.position = new Vector3(_shadowMesh.transform.position.x, 
                     _shadowMesh.transform.position.y, 
-                    hit.point.z - 0.05f);  // Offset z to give shadow depth for player to walk on. 
+                    hit.point.z - SHADOW_MESH_DEPTH_OFFSET); 
             }
             else
             {
