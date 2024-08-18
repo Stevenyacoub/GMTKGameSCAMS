@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 public class ExtrudedMesh2D : MonoBehaviour
 {
     public Vector2[] shape2D; // 2D vertices
-    public float depth = 1.0f; // Depth for extrusion
+    public float depth = .5f; // Depth for extrusion
+    
+    /// If true, extrudes the shape along the positive Z-axis. Otherwise, extrudes along negative Z-axis.
+    /// Adjust this depending on the direction of the scene. 
+    [FormerlySerializedAs("hasPositiveDepthAxis")] public bool flipShadowMeshDepth = true;
 
     private MeshFilter meshFilter;
     private MeshRenderer meshRenderer;
@@ -26,6 +31,11 @@ public class ExtrudedMesh2D : MonoBehaviour
     
     
     public void GenerateMesh() {
+        if (flipShadowMeshDepth)
+        {
+            depth *= -1.0f;
+        }
+        
         int numVertices = shape2D.Length;
         Vector3[] vertices = new Vector3[numVertices * 2];
         int[] triangles = new int[(numVertices - 2) * 6 + numVertices * 6];
