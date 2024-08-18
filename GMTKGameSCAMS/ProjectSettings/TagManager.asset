@@ -6,6 +6,7 @@ TagManager:
   tags:
   - MainLight
   - ShadowableObject
+  - Wall
   layers:
   - Default
   - TransparentFX
