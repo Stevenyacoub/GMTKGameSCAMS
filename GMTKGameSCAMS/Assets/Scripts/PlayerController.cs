@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     InputAction move;
 
     private WallState currentWallState = WallState.Wall;
-    private bool collidingWithWall = false;
+    private GameObject collidedWall;
 
     [SerializeField] private float maxJumpHeight = 1.0f;
     [SerializeField] private float maxJumpDuration = 0.5f;
@@ -93,8 +93,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnterWall(InputAction.CallbackContext context)
     {
-        Debug.Log("collidingWithWall = " + collidingWithWall);
-        if (currentWallState == WallState.Wall || collidingWithWall == false)
+        if (currentWallState == WallState.Wall || collidedWall == null)
         {
             return;
         }
@@ -163,6 +162,16 @@ public class PlayerController : MonoBehaviour
         {
             Quaternion toRotation = Quaternion.LookRotation(-1 * moveDirection, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+            
+            // Align player along the wall. Must align often because when the player turns around, it's collider
+            // pushes it away from the wall.
+            if (currentWallState == WallState.Wall && collidedWall != null)
+            {
+                float wallZPos = collidedWall.transform.position.z;
+                transform.position = new Vector3(transform.position.x,
+                    transform.position.y,
+                    wallZPos);
+            }
         }
     }
 
@@ -232,7 +241,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.CompareTag("Wall"))
         {
-            collidingWithWall = true;
+            collidedWall = other.gameObject;
         }
     }
 
@@ -244,7 +253,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.CompareTag("Wall"))
         {
-            collidingWithWall = false;
+            collidedWall = null;
         }
     }
 }
