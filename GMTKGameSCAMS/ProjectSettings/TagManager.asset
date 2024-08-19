@@ -8,6 +8,7 @@ TagManager:
   - ShadowableObject
   - Wall
   - Ground
+  - Shadows
   layers:
   - Default
   - TransparentFX
