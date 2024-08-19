@@ -14,7 +14,7 @@ public class ExtrudedMesh2D : MonoBehaviour
     
     /// If true, extrudes the shape along the positive Z-axis. Otherwise, extrudes along negative Z-axis.
     /// Adjust this depending on the direction of the scene. 
-    [FormerlySerializedAs("hasPositiveDepthAxis")] public bool flipShadowMeshDepth = true;
+    public bool flipShadowMeshDepth = true;
 
     private Mesh _mesh;
     private MeshFilter _meshFilter;
@@ -31,6 +31,11 @@ public class ExtrudedMesh2D : MonoBehaviour
     void Start()
     {
         GenerateMesh();
+        
+        if (flipShadowMeshDepth)
+        {
+            depth *= -1.0f;
+        }
     }
     
     
@@ -38,11 +43,6 @@ public class ExtrudedMesh2D : MonoBehaviour
         if (shape2D == null || shape2D.Length == 0)
         {
             return;
-        } 
-        
-        if (flipShadowMeshDepth)
-        {
-            depth *= -1.0f;
         }
         
         int numVertices = shape2D.Length;
