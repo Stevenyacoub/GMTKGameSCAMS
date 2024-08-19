@@ -11,7 +11,6 @@ using UnityEngine.UI;
 public class ShadowableObject : MonoBehaviour
 {
     [SerializeField] private GameObject pointsParent;
-    [SerializeField] private Material shadowMaterial;
 
     private GameObject _mainLight;
     private VertexPoints[] _points;
@@ -36,10 +35,12 @@ public class ShadowableObject : MonoBehaviour
         obj.AddComponent<MeshRenderer>();
         obj.AddComponent<MeshFilter>();
         obj.AddComponent<MeshCollider>();
-        obj.GetComponent<MeshRenderer>().material = shadowMaterial;
-        obj.tag = "Ground";
+        obj.GetComponent<MeshRenderer>().enabled = false;
+        
+        obj.tag = "Shadow";
+        obj.name = this.name + "_Shadow";
+        
         _shadowMesh = obj.AddComponent<ExtrudedMesh2D>();  // Must be added after Mesh Renderer and Filter
-
         _shadowMesh.flipShadowMeshDepth = flipShadowMeshDepth;
         _shadowMesh.depth = shadowMeshDepth;
         _shadowMesh.GenerateMesh();
@@ -64,8 +65,6 @@ public class ShadowableObject : MonoBehaviour
                 _shadowPointsXY[i] = new Vector2(hit.point.x, hit.point.y);
                 _shadowMesh.shape2D = _shadowPointsXY;
                 _shadowMesh.GenerateMesh();
-                
-                Debug.Log(hit.collider.gameObject.name + " hit.point.z: " + hit.point.z);
 
                 // Set the z position of the shadow.
                 _shadowMesh.transform.position = new Vector3(_shadowMesh.transform.position.x, 
