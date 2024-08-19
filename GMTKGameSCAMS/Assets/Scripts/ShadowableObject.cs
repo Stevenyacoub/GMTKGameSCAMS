@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 /// An object that creates interactive shadows that the player can run on
@@ -19,8 +20,9 @@ public class ShadowableObject : MonoBehaviour
     
     public bool flipShadowMeshDepth = true;
     
+    public float shadowMeshDepth = 0.1f;
     /// Z-axis offset to give shadow depth for player to walk on.
-    public const float SHADOW_MESH_DEPTH_OFFSET = 0.05f;
+    public float shadowMeshDepthOffset = 0.05f;
     
     // Start is called before the first frame update
     void Start()
@@ -33,10 +35,13 @@ public class ShadowableObject : MonoBehaviour
         GameObject obj = new GameObject();
         obj.AddComponent<MeshRenderer>();
         obj.AddComponent<MeshFilter>();
+        obj.AddComponent<MeshCollider>();
         obj.GetComponent<MeshRenderer>().material = shadowMaterial;
+        obj.tag = "Ground";
         _shadowMesh = obj.AddComponent<ExtrudedMesh2D>();  // Must be added after Mesh Renderer and Filter
 
         _shadowMesh.flipShadowMeshDepth = flipShadowMeshDepth;
+        _shadowMesh.depth = shadowMeshDepth;
         _shadowMesh.GenerateMesh();
 
     }
@@ -44,7 +49,7 @@ public class ShadowableObject : MonoBehaviour
     void FixedUpdate()
     {
         // Bit shift the index of the layer (8) to get a bit mask
-        int layerMask = LayerMask.GetMask("ReceivesShadows");
+        int layerMask = LayerMask.GetMask("2DPlayArea");
 
         for (int i = 0; i < _points.Length; i++)
         {
@@ -59,11 +64,13 @@ public class ShadowableObject : MonoBehaviour
                 _shadowPointsXY[i] = new Vector2(hit.point.x, hit.point.y);
                 _shadowMesh.shape2D = _shadowPointsXY;
                 _shadowMesh.GenerateMesh();
+                
+                Debug.Log(hit.collider.gameObject.name + " hit.point.z: " + hit.point.z);
 
                 // Set the z position of the shadow.
                 _shadowMesh.transform.position = new Vector3(_shadowMesh.transform.position.x, 
                     _shadowMesh.transform.position.y, 
-                    hit.point.z - SHADOW_MESH_DEPTH_OFFSET); 
+                    hit.point.z - shadowMeshDepthOffset); 
             }
             else
             {

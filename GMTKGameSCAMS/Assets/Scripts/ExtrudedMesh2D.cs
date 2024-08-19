@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,19 +10,21 @@ using UnityEngine.Serialization;
 public class ExtrudedMesh2D : MonoBehaviour
 {
     public Vector2[] shape2D; // 2D vertices
-    public float depth = .5f; // Depth for extrusion
+    public float depth = .1f; // Depth for extrusion
     
     /// If true, extrudes the shape along the positive Z-axis. Otherwise, extrudes along negative Z-axis.
     /// Adjust this depending on the direction of the scene. 
     [FormerlySerializedAs("hasPositiveDepthAxis")] public bool flipShadowMeshDepth = true;
 
-    private MeshFilter _meshFilter;
     private Mesh _mesh;
+    private MeshFilter _meshFilter;
+    private MeshCollider _meshCollider;
 
     void Awake()
     {
         _mesh = new Mesh();
         _meshFilter = GetComponent<MeshFilter>();
+        _meshCollider = GetComponent<MeshCollider>();
     }
     
     // Start is called before the first frame update
@@ -88,5 +91,7 @@ public class ExtrudedMesh2D : MonoBehaviour
         _mesh.RecalculateNormals();
 
         _meshFilter.mesh = _mesh;
+        _meshCollider.sharedMesh = _mesh;
+        _meshCollider.convex = true;
     }
 }
