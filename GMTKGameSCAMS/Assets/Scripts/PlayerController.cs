@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float maxSpeed;
     [SerializeField] public float rotationSpeed;
-    [SerializeField] public bool freezeRotation;
+    private bool freezeRotation;
     private float magnitude;
     private Vector3 moveDirection;
     private Vector3 moveForce;
