@@ -58,6 +58,9 @@ public class PlayerController : MonoBehaviour
         
         inputActions.Grounded.Hold.started += OnHoldObject;
         inputActions.Grounded.Hold.canceled -= OnHoldObject;
+        
+        // Player should begin on the wall
+        OnEnterWallState();
 
     }
 
@@ -117,7 +120,6 @@ public class PlayerController : MonoBehaviour
     private void OnJump(InputAction.CallbackContext context)
     {
         isJumpPressed = context.ReadValueAsButton();
-        Debug.Log(isJumpPressed);
         handleJump();
     }
 
@@ -134,7 +136,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("ShadowableObject"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("ShadowableObject") || collision.gameObject.CompareTag("Shadow"))
         {
             isGrounded = true;
         }
@@ -242,7 +244,6 @@ public class PlayerController : MonoBehaviour
     
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Staying in trigger with the specific tag: " + other.gameObject.name);
         // Check if the other collider has the specific tag
         if (other.CompareTag("ShadowableObject"))
         {
