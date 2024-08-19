@@ -8,11 +8,6 @@ public class AudioManager : MonoBehaviour
 
     public AudioClip BGM;
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
     private void Start()
     {
         m_Source.clip = BGM;

@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxJumpDuration = 0.5f;
     private float jumpInit;
     private bool isJumpPressed = false;
-    private bool isJumping = false;
+    private bool isGrounded = true;
     
     
     private bool isHoldPressed = false;
@@ -77,7 +77,6 @@ public class PlayerController : MonoBehaviour
             magnitude = Mathf.Clamp01(magnitude);
         }
 
-        Debug.Log(move.ReadValue<Vector2>());
     }
 
     private void OnEnable()
@@ -123,9 +122,20 @@ public class PlayerController : MonoBehaviour
 
     private void handleJump()
     {
-        if (!isJumping && isJumpPressed)
+        Debug.Log("handle jump called. isGrounded is " + isGrounded);
+        if (isGrounded && isJumpPressed)
         {
-            isJumping = true;
+            isGrounded = false;
+            Debug.Log(Vector3.up * jumpSpeed);
+            rb.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("ShadowableObject"))
+        {
+            isGrounded = true;
         }
     }
 
@@ -210,7 +220,6 @@ public class PlayerController : MonoBehaviour
     {
         transform.localPosition += new Vector3(0.0f, 0.0f, 1.0f);
         transform.localScale = Vector3.one;
-        Debug.Log(WallState.Roaming3D);
     }
 
     /*private void OnExitRoaming3DState()
@@ -228,7 +237,6 @@ public class PlayerController : MonoBehaviour
     private void OnEnterWallState()
     {
         transform.localScale = new Vector3(0.01f, 1f, 1f);
-        Debug.Log(WallState.Wall);
     }
     
     void OnTriggerEnter(Collider other)

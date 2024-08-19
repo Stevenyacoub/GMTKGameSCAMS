@@ -810,7 +810,8 @@ MonoBehaviour:
   moveSpeed: 5
   maxSpeed: 5
   rotationSpeed: 1800
-  jumpSpeed: 0
+  freezeRotation: 0
+  jumpSpeed: 7
   maxJumpHeight: 1
   maxJumpDuration: 0.5
   rb: {fileID: 1986196827}
@@ -821,6 +822,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3889771537199287936, guid: 1eba1c31d1ea6684cb9ee2577911cfff, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     - target: {fileID: 3889771537199287936, guid: 1eba1c31d1ea6684cb9ee2577911cfff, type: 3}
       propertyPath: m_IsKinematic
       value: 0
