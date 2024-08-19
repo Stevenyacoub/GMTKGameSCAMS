@@ -32,9 +32,10 @@ public class PlayerController : MonoBehaviour
     private bool isJumpPressed = false;
     private bool isGrounded = true;
     
-    
     private bool isHoldPressed = false;
     private GameObject collidingObject;
+
+    [SerializeField] private Animator animator;
     
 
     [SerializeField] private Rigidbody rb;
@@ -61,7 +62,6 @@ public class PlayerController : MonoBehaviour
         
         // Player should begin on the wall
         OnEnterWallState();
-
     }
 
 
@@ -171,10 +171,13 @@ public class PlayerController : MonoBehaviour
 
         transform.Translate(-1 * moveDirection * magnitude * moveSpeed * Time.deltaTime, Space.World);
 
-        if (moveDirection != Vector3.zero && freezeRotation == false)
+        if (moveDirection != Vector3.zero)
         {
-            Quaternion toRotation = Quaternion.LookRotation(-1 * moveDirection, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+            if (freezeRotation == false)
+            {
+                Quaternion toRotation = Quaternion.LookRotation(-1 * moveDirection, Vector3.up);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+            }
             
             // Align player along the wall. Must align often because when the player turns around, it's collider
             // pushes it away from the wall.
@@ -185,6 +188,12 @@ public class PlayerController : MonoBehaviour
                     transform.position.y,
                     wallZPos);
             }
+            
+            animator.SetBool("IsMoving", true);
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
         }
     }
 
