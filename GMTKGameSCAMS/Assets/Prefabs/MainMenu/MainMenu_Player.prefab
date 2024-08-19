@@ -662,7 +662,7 @@ GameObject:
   - component: {fileID: 6231339433626420612}
   - component: {fileID: 43354738528493566}
   m_Layer: 0
-  m_Name: ShadowPlayer
+  m_Name: MainMenu_Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -695,7 +695,7 @@ Animator:
   m_GameObject: {fileID: 6715424083189669694}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: dadfe38de7b07e04795ae6078aff93e2, type: 3}
-  m_Controller: {fileID: 9100000, guid: 2a7f11b9e0fee2e45ae8523bca763163, type: 2}
+  m_Controller: {fileID: 9100000, guid: bf1dc3a3ef2485b4587fde60981f8596, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
