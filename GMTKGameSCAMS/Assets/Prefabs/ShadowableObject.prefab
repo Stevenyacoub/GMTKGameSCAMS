@@ -49,8 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointsParent: {fileID: 2178973626445487920}
   flipShadowMeshDepth: 1
-  shadowMeshDepth: 0.5
-  shadowMeshDepthOffset: -0.3
+  shadowMeshDepth: 0.3
+  shadowMeshDepthOffset: -0.2
 --- !u!65 &2178973624717485638
 BoxCollider:
   m_ObjectHideFlags: 0

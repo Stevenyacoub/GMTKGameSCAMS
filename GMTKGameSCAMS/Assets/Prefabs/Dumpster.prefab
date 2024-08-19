@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointsParent: {fileID: 6080643632236336758}
   flipShadowMeshDepth: 1
-  shadowMeshDepth: 0.5
+  shadowMeshDepth: 0.3
   shadowMeshDepthOffset: -0.3
 --- !u!65 &3898814899573728392
 BoxCollider:
@@ -62,8 +62,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1, z: 1.5}
-  m_Center: {x: 0, y: 0, z: 0.04}
+  m_Size: {x: 5.337492, y: 3.1876063, z: 2.7910461}
+  m_Center: {x: -0.00012534006, y: 0.00000051089694, z: -0.031724147}
 --- !u!1 &6080643631973643839
 GameObject:
   m_ObjectHideFlags: 0

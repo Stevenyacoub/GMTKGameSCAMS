@@ -292,7 +292,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2761254397494410521}
-  m_LocalRotation: {x: -0, y: -0.9999421, z: -0, w: -0.010762386}
+  m_LocalRotation: {x: -0, y: -0.9999421, z: 0, w: -0.010759754}
   m_LocalPosition: {x: -4.607, y: -2.023, z: -11.365}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
@@ -316,8 +316,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointsParent: {fileID: 1854588032580265000}
   flipShadowMeshDepth: 1
-  shadowMeshDepth: 0.5
-  shadowMeshDepthOffset: -0.3
+  shadowMeshDepth: 0.3
+  shadowMeshDepthOffset: 0
 --- !u!65 &1854588031415495619
 BoxCollider:
   m_ObjectHideFlags: 0
