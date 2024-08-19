@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     
     private bool isHoldPressed = false;
     private GameObject collidingObject;
+    private GameObject currentHeldObject;
 
     [SerializeField] private Animator animator;
     
@@ -150,18 +151,19 @@ public class PlayerController : MonoBehaviour
 
     private void HandleHold()
     {
-        if (collidingObject != null)
+        if (isHoldPressed && currentHeldObject == null && collidingObject != null)
         {
-            if (isHoldPressed)
-            {
-                collidingObject.transform.parent = transform;
-                freezeRotation = true;
-            }
-            else
-            {
-                collidingObject.transform.parent = null;
-                freezeRotation = false;
-            }
+            currentHeldObject = collidingObject;
+            currentHeldObject.transform.parent = transform;
+            freezeRotation = true;
+            // Debug.Log("isHoldPressed: " + isHoldPressed + ", collidingObjectParent: " + collidingObject.transform.parent.name);
+        }
+        else if (isHoldPressed == false && currentHeldObject != null)
+        {
+            currentHeldObject.transform.parent = null;
+            currentHeldObject = null;
+            freezeRotation = false;
+            // Debug.Log("isHoldPressed: " + isHoldPressed + ", collidingObjectParent: " + collidingObject.transform.parent.name);
         }
     }
 

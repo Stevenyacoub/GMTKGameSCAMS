@@ -92,6 +92,5 @@ public class ExtrudedMesh2D : MonoBehaviour
 
         _meshFilter.mesh = _mesh;
         _meshCollider.sharedMesh = _mesh;
-        _meshCollider.convex = true;
     }
 }
