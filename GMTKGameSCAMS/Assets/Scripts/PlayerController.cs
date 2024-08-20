@@ -151,14 +151,14 @@ public class PlayerController : MonoBehaviour
 
     private void HandleHold()
     {
-        if (isHoldPressed && currentHeldObject == null && collidingObject != null)
+        if (isHoldPressed && currentHeldObject == null && collidingObject != null && currentWallState == WallState.Roaming3D && isGrounded)
         {
             currentHeldObject = collidingObject;
             currentHeldObject.transform.parent = transform;
             freezeRotation = true;
             // Debug.Log("isHoldPressed: " + isHoldPressed + ", collidingObjectParent: " + collidingObject.transform.parent.name);
         }
-        else if (isHoldPressed == false && currentHeldObject != null)
+        else if (isHoldPressed == false && currentHeldObject != null && isGrounded)
         {
             currentHeldObject.transform.parent = null;
             currentHeldObject = null;
