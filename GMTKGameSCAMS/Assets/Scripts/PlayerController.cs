@@ -34,9 +34,12 @@ public class PlayerController : MonoBehaviour
     private GameObject currentHeldObject;
 
     [SerializeField] private Animator animator;
-    
-
     [SerializeField] private Rigidbody rb;
+    
+    public float stuckVelocityThreshold = 0.1f;
+    public float stuckTimeThreshold = 2.0f;
+    private float stuckTimer;
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -127,6 +130,7 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = false;
             rb.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
+            animator.SetBool("IsJumping", true);
         }
     }
 
@@ -135,15 +139,6 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("ShadowableObject") || collision.gameObject.CompareTag("Shadow"))
         {
             isGrounded = true;
-        }
-    }
-    
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("ShadowableObject") || collision.gameObject.CompareTag("Shadow"))
-        {
-            Debug.Log("Collision exited");
-            isGrounded = false;
         }
     }
 
@@ -205,6 +200,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        CheckForStuck();
+        
+        Debug.Log("isGrounded: " + isGrounded);
         if (isGrounded)
         {
             animator.SetBool("IsJumping", false);
@@ -212,7 +210,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             animator.SetBool("IsMoving", false);
-            animator.SetBool("IsJumping", true);
         }
     }
 
@@ -273,6 +270,28 @@ public class PlayerController : MonoBehaviour
             {
                 collidedWall = null;
             }
+        }
+    }
+    
+    void CheckForStuck()
+    {
+        // If the player is not grounded and their vertical velocity is low, they might be stuck
+        // Add to the timer. If the timer exceeds a threshold, assume they are stuck.
+        if (!isGrounded && Mathf.Abs(rb.velocity.y) < stuckVelocityThreshold)
+        {
+            stuckTimer += Time.deltaTime;
+            
+            if (stuckTimer >= stuckTimeThreshold)
+            {
+                Debug.Log("Player is stuck! stuckTimer: " + stuckTimer);
+                animator.SetBool("IsMoving", false);
+                animator.SetBool("IsJumping", false);
+                isGrounded = true;
+            }
+        }
+        else
+        {
+            stuckTimer = 0;
         }
     }
 }
