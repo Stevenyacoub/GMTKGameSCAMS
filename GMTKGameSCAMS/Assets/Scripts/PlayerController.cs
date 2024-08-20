@@ -190,6 +190,15 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("IsMoving", false);
         }
+
+        if (isGrounded)
+        {
+            animator.SetBool("IsJumping", false);
+        }
+        else
+        {
+            animator.SetBool("IsJumping", true);
+        }
     }
 
     protected void SetSizeState(WallState argState)
