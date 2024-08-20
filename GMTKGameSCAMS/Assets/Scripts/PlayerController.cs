@@ -137,6 +137,15 @@ public class PlayerController : MonoBehaviour
             isGrounded = true;
         }
     }
+    
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("ShadowableObject") || collision.gameObject.CompareTag("Shadow"))
+        {
+            Debug.Log("Collision exited");
+            isGrounded = false;
+        }
+    }
 
     private void OnHoldObject(InputAction.CallbackContext context)
     {
@@ -191,6 +200,11 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("IsMoving", false);
         }
 
+
+    }
+
+    private void FixedUpdate()
+    {
         if (isGrounded)
         {
             animator.SetBool("IsJumping", false);
