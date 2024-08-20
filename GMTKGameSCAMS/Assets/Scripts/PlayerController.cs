@@ -274,7 +274,11 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.CompareTag("Wall"))
         {
-            collidedWall = null;
+            // Edge case: Player drifts away from wall, but they should still be collided with it. 
+            if (currentWallState != WallState.Wall)
+            {
+                collidedWall = null;
+            }
         }
     }
 }
