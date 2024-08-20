@@ -8,6 +8,7 @@ public class EndPortal : MonoBehaviour
     public float pulseSpeed = 1.0f;
     public float minScale = 0.8f;
     public float maxScale = 1.2f;
+    [SerializeField] public AudioManager sfxManager;
 
     private Vector3 originalScale;
     private void Start()
@@ -19,6 +20,7 @@ public class EndPortal : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            sfxManager.playSFX();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }

@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviour
     {
         CheckForStuck();
         
-        Debug.Log("isGrounded: " + isGrounded);
+        //Debug.Log("isGrounded: " + isGrounded);
         if (isGrounded)
         {
             animator.SetBool("IsJumping", false);
