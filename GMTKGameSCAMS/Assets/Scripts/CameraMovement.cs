@@ -26,14 +26,12 @@ public class CameraMovement : MonoBehaviour
         // Draw a line representing the Y threshold
         Vector3 start = new Vector3(-10, yTopThreshold, 0);
         Vector3 end = new Vector3(10, yTopThreshold, 0);
-        UnityEditor.Handles.Label(new Vector3(0, yTopThreshold, 0), "Y Top Threshold: " + yTopThreshold);
         Gizmos.DrawLine(start, end);
         
         Gizmos.color = Color.magenta;
         start = new Vector3(-10, yBottomThreshold, 0);
         end = new Vector3(10, yBottomThreshold, 0);
-
-        UnityEditor.Handles.Label(new Vector3(0, yBottomThreshold, 0), "Y Bottom Threshold: " + yBottomThreshold);
+        
         Gizmos.DrawLine(start, end);
     }
 }
