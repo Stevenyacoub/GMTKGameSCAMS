@@ -79,7 +79,7 @@ MonoBehaviour:
   moveSpeed: 5
   maxSpeed: 5
   rotationSpeed: 1800
-  jumpSpeed: 7
+  jumpSpeed: 5
   maxJumpHeight: 1
   maxJumpDuration: 0.5
   animator: {fileID: 8932371582091516394}
@@ -91,6 +91,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3889771537199287998}
     m_Modifications:
+    - target: {fileID: 473526737146291833, guid: c03cb5c9f8039d14eb1c9c2adf63ff82, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: dad19eb02570d4969b417d66dc75b047, type: 2}
     - target: {fileID: 6231339433626420612, guid: c03cb5c9f8039d14eb1c9c2adf63ff82, type: 3}
       propertyPath: m_RootOrder
       value: 0
