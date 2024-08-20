@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnterWall(InputAction.CallbackContext context)
     {
-        if (currentWallState == WallState.Wall || collidedWall == null)
+        if (currentHeldObject != null || currentWallState == WallState.Wall || collidedWall == null )
         {
             return;
         }
@@ -197,6 +197,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            animator.SetBool("IsMoving", false);
             animator.SetBool("IsJumping", true);
         }
     }
