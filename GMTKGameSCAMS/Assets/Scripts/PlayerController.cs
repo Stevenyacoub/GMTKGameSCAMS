@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnterWall(InputAction.CallbackContext context)
     {
-        if (currentWallState == WallState.Wall || collidedWall == null)
+        if (currentHeldObject != null || currentWallState == WallState.Wall || collidedWall == null )
         {
             return;
         }
@@ -135,6 +135,15 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("ShadowableObject") || collision.gameObject.CompareTag("Shadow"))
         {
             isGrounded = true;
+        }
+    }
+    
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("ShadowableObject") || collision.gameObject.CompareTag("Shadow"))
+        {
+            Debug.Log("Collision exited");
+            isGrounded = false;
         }
     }
 
@@ -191,12 +200,18 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("IsMoving", false);
         }
 
+
+    }
+
+    private void FixedUpdate()
+    {
         if (isGrounded)
         {
             animator.SetBool("IsJumping", false);
         }
         else
         {
+            animator.SetBool("IsMoving", false);
             animator.SetBool("IsJumping", true);
         }
     }
