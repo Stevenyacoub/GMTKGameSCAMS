@@ -26,9 +26,6 @@ public class PlayerController : MonoBehaviour
     private WallState currentWallState = WallState.Wall;
     private GameObject collidedWall;
 
-    [SerializeField] private float maxJumpHeight = 1.0f;
-    [SerializeField] private float maxJumpDuration = 0.5f;
-    private float jumpInit;
     private bool isJumpPressed = false;
     private bool isGrounded = true;
     
@@ -126,11 +123,9 @@ public class PlayerController : MonoBehaviour
 
     private void handleJump()
     {
-        Debug.Log("handle jump called. isGrounded is " + isGrounded);
         if (isGrounded && isJumpPressed)
         {
             isGrounded = false;
-            Debug.Log(Vector3.up * jumpSpeed);
             rb.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
         }
     }
@@ -156,14 +151,12 @@ public class PlayerController : MonoBehaviour
             currentHeldObject = collidingObject;
             currentHeldObject.transform.parent = transform;
             freezeRotation = true;
-            // Debug.Log("isHoldPressed: " + isHoldPressed + ", collidingObjectParent: " + collidingObject.transform.parent.name);
         }
         else if (isHoldPressed == false && currentHeldObject != null && isGrounded)
         {
             currentHeldObject.transform.parent = null;
             currentHeldObject = null;
             freezeRotation = false;
-            // Debug.Log("isHoldPressed: " + isHoldPressed + ", collidingObjectParent: " + collidingObject.transform.parent.name);
         }
     }
 
@@ -206,18 +199,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        //WallState prevState = currentWallState;
         currentWallState = argState;
-
-        /*switch (prevState)
-        {
-            case WallState.Wall:
-                OnExitWallState();
-                break;
-            case WallState.Roaming3D:
-                OnExitRoaming3DState();
-                break;
-        }*/
 
         switch (currentWallState)
         {
@@ -235,18 +217,6 @@ public class PlayerController : MonoBehaviour
         transform.localPosition += new Vector3(0.0f, 0.0f, 1.0f);
         transform.localScale = Vector3.one;
     }
-
-    /*private void OnExitRoaming3DState()
-    {
-        transform.localScale = new Vector3(0.1f, 1.0f, 1.0f);
-        Debug.Log(WallState.Wall);
-    }
-
-    private void OnExitWallState()
-    {
-        transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-        Debug.Log(WallState.Roaming3D);
-    }*/
 
     private void OnEnterWallState()
     {

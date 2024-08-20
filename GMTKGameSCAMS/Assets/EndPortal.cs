@@ -19,7 +19,6 @@ public class EndPortal : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Loading Scene Entitled '" + SceneManager.GetActiveScene().buildIndex + 1 + "'");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
@@ -28,7 +27,6 @@ public class EndPortal : MonoBehaviour
     {
         // Calculate the scale factor using a sine wave to oscillate between minScale and maxScale
         float scale = minScale + (Mathf.Sin(Time.time * pulseSpeed) + 1) / 2 * (maxScale - minScale);
-        Debug.Log("scale: " + scale);
         transform.localScale = originalScale * scale;
     }
 }
